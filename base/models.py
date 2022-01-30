@@ -38,7 +38,11 @@ class Room(models.Model):
 
     #ManyToManyFieldとは多対多の参照をする時に必要になる
     #親クラスにUserを指定しroomが子になる
-    #
+    #roomは複数のUser（participants）を指定でき逆にUserテーブルのユーザーは複数のroomに参加できる
+
+    #hostもUserの子になっているので、オブジェクト.クラス名_setとすることで逆参照（親から子）しようとしても
+    #User→hostなのかUser→participantsのどちらかがわからずでエラーになるそこでrelated_name='participants'を
+    #作成し逆参照する際のクラス名を指定した名前にすることで参照が可能になる
     participants = models.ManyToManyField(User, related_name='participants')
     #auto_now インスタンスがアップデート（セーブ）される度にスナップショット(DataTimeField)が自動で取られる
     updated = models.DateTimeField(auto_now=True)
@@ -73,6 +77,9 @@ class Message(models.Model):
     body = models.TextField()
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering =['-updated', '-created']
 
     def __str__(self):
         return self.body[0:50]

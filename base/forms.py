@@ -1,5 +1,6 @@
 from django.forms import ModelForm
 from .models import Room
+from django.contrib.auth.models import User
 
 class RoomForm(ModelForm):
     #普通、クラスに対して追加の情報や機能を差し挟むためには、初期化子の中で親クラスのメソッドを呼んだりメンバ変数や
@@ -14,3 +15,11 @@ class RoomForm(ModelForm):
         #Formのフィールド（選択事項）をRoomのどれにするか
         #__all__は全てをフィールドにに含める（含めることができないものもある。今回はupdatedとcreated）
         fields = '__all__'
+
+        #excludeで上のallから除外するのを指定する
+        exclude = ['host', 'participants']
+
+class UserForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email']

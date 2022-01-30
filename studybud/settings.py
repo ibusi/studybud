@@ -66,10 +66,23 @@ INSTALLED_APPS = [
     #python manage.py startapp baseでbaseフォルダーを作ったのでその中の
     #base/apps.pyのclass BaseConfigとを紐づけbaseフォルダーおよび以下のアプリやモデルを有効かする
     'base.apps.BaseConfig',
+
+    #restframeworkをインストールした後はここに記述する必要がある
+    'rest_framework',
+
+    'corsheaders',
 ]
 
+
+# Djangoの文脈でMiddlewareとは
+# リクエストが送られた時に行う処理
+# レスポンスを返す前に行う処理
+# などを定義することができるもの
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+
+    "corsheaders.middleware.CorsMiddleware",
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -78,6 +91,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+#一番最初に参照するURLのフォルダーを指定する
 ROOT_URLCONF = 'studybud.urls'
 
 TEMPLATES = [
@@ -153,7 +167,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+#これによりstaticファイルが存在することを知らせる事ができる
+STATICFILES_DIRS = [
+    BASE_DIR / 'static'
+]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CORS_ALLOW_ALL_ORIGINS = True
